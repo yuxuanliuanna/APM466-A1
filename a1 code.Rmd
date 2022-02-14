@@ -1,0 +1,422 @@
+---
+title: "a1 revised"
+author: "Yuxuan Liu"
+date: "2022/1/30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## APM466 Assignment 1
+## Basic Setups
+```{r}
+library(jrvFinance)
+library(tidyverse)
+library(lubridate)
+bond=read_csv("C:/Users/miaomiao/Desktop/apm466/a1data.csv")
+#view(bond)
+```
+
+```{r}
+#get basic information and set up clean price matrix
+cpmatrix = matrix(c(bond$'j10',bond$'j11',bond$'j12',bond$'j13',bond$'j14',bond$'j17',bond$'j18',bond$'j19',bond$'j20',bond$'j21'),nrow = 10, ncol = 10,byrow = TRUE)
+pdate <- c("2022-01-10", "2022-01-11", "2022-01-12", "2022-01-13" ,"2022-01-14","2022-01-17","2022-01-18","2022-01-19","2022-01-20","2022-01-21")
+cpmatrix
+```
+
+## Emperical Questions
+Q4a
+```{r}
+library(lubridate)
+bond$month=interval(ymd('2022-01-10'),bond$`maturity date`)%/%months(1)
+
+#dirty price
+bond$dp1=0
+bond$dp2=0
+bond$dp3=0
+bond$dp4=0
+bond$dp5=0
+bond$dp6=0
+bond$dp7=0
+bond$dp8=0
+bond$dp9=0
+bond$dp10=0
+#generate a vector to indicate days since 2022-01-01
+days=c(10,11,12,13,14,17,18,19,20,21)
+for (i in c(1:10)) {
+  bond[15+i]= bond[4+i]+(4*30 + (days[i]))/365 * bond$coupon * 100
+}
+
+```
+
+```{r}
+#store dirty price as a matrix for calculation
+dp_matrix = matrix(c(bond$dp1,bond$dp2,bond$dp3,bond$dp4,bond$dp5,bond$dp6,bond$dp7,bond$dp8,bond$dp9,bond$dp10),nrow = 10, ncol = 10,byrow = TRUE)
+
+dp_matrix
+```
+
+```{r}
+yield1 = c(0,0,0,0,0,0,0,0,0,0)
+b1 = dp_matrix[,1]
+for (i in c(1:10))
+{yield1[i]=bond.yields(settle=pdate[i], mature=bond$`maturity date`[1], coupon=as.numeric(bond$coupon[1]),freq=2, price=b1[i],comp.freq=Inf,redemption_value = 100)}
+yield1
+```
+
+```{r}
+yield2 = c(0,0,0,0,0,0,0,0,0,0)
+b2 = dp_matrix[,2]
+for (i in c(1:10))
+{yield2[i]=bond.yields(settle=pdate[i], mature=bond$`maturity date`[2], coupon=as.numeric(bond$coupon[2]),freq=2, price=b2[i],comp.freq=Inf,redemption_value = 100)}
+yield2
+```
+
+```{r}
+yield3 = c(0,0,0,0,0,0,0,0,0,0)
+b3 = dp_matrix[,3]
+for (i in c(1:10))
+{yield3[i]=bond.yields(settle=pdate[i], mature=bond$`maturity date`[3], coupon=as.numeric(bond$coupon[3]),freq=2, price=b3[i],comp.freq=Inf,redemption_value = 100)}
+yield3
+```
+
+```{r}
+yield4 = c(0,0,0,0,0,0,0,0,0,0)
+b4 = dp_matrix[,4]
+for (i in c(1:10))
+{yield4[i]=bond.yields(settle=pdate[i], mature=bond$`maturity date`[4], coupon=as.numeric(bond$coupon[4]),freq=2, price=b4[i],comp.freq=Inf,redemption_value = 100)}
+yield4
+```
+
+```{r}
+yield5 = c(0,0,0,0,0,0,0,0,0,0)
+b5 = dp_matrix[,5]
+for (i in c(1:10))
+{yield5[i]=bond.yields(settle=pdate[i], mature=bond$`maturity date`[5], coupon=bond$coupon[5],freq=2, price=b5[i],comp.freq=Inf,redemption_value = 100)}
+yield5
+```
+
+```{r}
+yield6 = c(0,0,0,0,0,0,0,0,0,0)
+b6 = dp_matrix[,6]
+for (i in c(1:10))
+{yield6[i]=bond.yields(settle=pdate[i], mature=bond$`maturity date`[6], coupon=as.numeric(bond$coupon[6]),freq=2, price=b6[i],comp.freq=Inf,redemption_value = 100)}
+yield6
+```
+
+```{r}
+yield7 = c(0,0,0,0,0,0,0,0,0,0)
+b7 = dp_matrix[,7]
+for (i in c(1:10))
+{yield7[i]=bond.yields(settle=pdate[i], mature=bond$`maturity date`[7], coupon=as.numeric(bond$coupon[7]),freq=2, price=b7[i],comp.freq=Inf,redemption_value = 100)}
+yield7
+```
+
+```{r}
+yield8 = c(0,0,0,0,0,0,0,0,0,0)
+b8 = dp_matrix[,8]
+for (i in c(1:10))
+{yield8[i]=bond.yields(settle=pdate[i], mature=bond$`maturity date`[8], coupon=as.numeric(bond$coupon[8]),freq=2, price=b8[i],comp.freq=Inf,redemption_value = 100)}
+yield8
+```
+
+```{r}
+yield9 = c(0,0,0,0,0,0,0,0,0,0)
+b9 = dp_matrix[,9]
+for (i in c(1:10))
+{yield9[i]=bond.yields(settle=pdate[i], mature=bond$`maturity date`[9], coupon=as.numeric(bond$coupon[9]),freq=2, price=b9[i],comp.freq=Inf,redemption_value = 100)}
+yield9
+```
+
+```{r}
+yield10 = c(0,0,0,0,0,0,0,0,0,0)
+b10 = dp_matrix[,10]
+for (i in c(1:10))
+{yield10[i]=bond.yields(settle=pdate[i], mature=bond$`maturity date`[10], coupon=as.numeric(bond$coupon[10]),freq=2, price=b10[i],comp.freq=Inf,redemption_value = 100)}
+yield10
+```
+
+```{r}
+daytomature <- interval(ymd('2022-01-10'),bond$`maturity date`)%/%days(1)
+for (i in c(1,9)){
+  daytomature[i+1]=daytomature[i+1]-i
+}
+daytomature[2]=interval(ymd('2022-01-10'),ymd('2023-09-01'))%/%days(1)
+daytomature[10]=interval(ymd('2022-01-10'),ymd('2027-09-01'))%/%days(1)
+```
+
+```{r}
+yeartomature<-daytomature/365
+yeartomature
+```
+
+```{r}
+yieldlst = data.frame(yield1,yield2,yield3,yield4,yield5,yield6,yield7,yield8,yield9,yield10)
+yieldlst
+```
+
+```{r}
+#linear interpolation of ytm
+for (i in c(1:10)){
+yieldlst[2,i]=yieldlst[1,i]+(90/365)*(yieldlst[3,i]-yieldlst[1,i])
+}
+for (i in c(1:10)){
+yieldlst[10,i]=yieldlst[8,i]+(365/90)*(yieldlst[9,i]-yieldlst[8,i])
+}
+yieldlst
+```
+
+
+
+```{r}
+plotdate=bond$`maturity date`
+plotdate[2]='2023-09-01'
+plotdate[10]='2027-09-01'
+plot(yeartomature,yieldlst[1,], type = "l", main = 'YTM Curve', col = 1, xlab = "Year", ylab = "YTM",lwd=1.0,xaxt='n')
+lines(yeartomature,yieldlst[2,], type = "l", col=2,lwd=1.0)
+lines(yeartomature,yieldlst[3,], type = "l", col=3,lwd=1.0)
+lines(yeartomature,yieldlst[4,], type = "l", col=4,lwd=1.0)
+lines(yeartomature,yieldlst[5,], type = "l", col=5,lwd=1.0)
+lines(yeartomature,yieldlst[6,], type = "l", col=6,lwd=1.0)
+lines(yeartomature,yieldlst[7,], type = "l", col=7,lwd=1.0)
+lines(yeartomature,yieldlst[8,], type = "l", col=8,lwd=1.0)
+lines(yeartomature,yieldlst[9,], type = "l", col=9,lwd=1.0)
+lines(yeartomature,yieldlst[10,], type = "l", col=10,lwd=1.0)
+legend(x='bottomright',legend=c(pdate),col=c(1,2,3,4,5,6,7,8,9,10),lty=c(1,2,3,4,5,6,7,8,9,10))
+axis(side=1,at=c(0.5,1,1.5,2,2.5,3,3.5,4,4.5,5),labels=c(plotdate))
+```
+
+Q4b
+```{r}
+spot_matrix=matrix(0,nrow=10,ncol=10,byrow=T)
+spot_matrix[1,1]=yieldlst[1,1]
+for (i in c(2:10)){
+  for (j in c(1:i-1)){
+      for (k in c(1:i-1)){
+  db=(100+100*bond$coupon[i]*0.5)/exp(daytomature[i]/365*yieldlst[1,i])
+  db=db+100*bond$coupon[i]*0.5/exp(daytomature[j]/365*yieldlst[1,i])
+  }
+    db=db-0.5*100*bond$coupon[i]/exp(daytomature[k]/365*spot_matrix[1,i-1])
+    }
+spot_matrix[1,i]=log((100+100*bond$coupon[i]*0.5)/db)/(daytomature[i]/365)
+}
+```
+
+```{r}
+spot_matrix[2,1]=yieldlst[2,1]
+for (i in c(2:10)){
+  for (j in c(1:i-1)){
+      for (k in c(1:i-1)){
+  db=(100+100*bond$coupon[i]*0.5)/exp(daytomature[i]/365*yieldlst[2,i])
+  db=db+100*bond$coupon[i]*0.5/exp(daytomature[j]/365*yieldlst[2,i])
+  }
+    db=db-0.5*100*bond$coupon[i]/exp(daytomature[k]/365*spot_matrix[2,i-1])
+    }
+spot_matrix[2,i]=log((100+100*bond$coupon[i]*0.5)/db)/(daytomature[i]/365)
+}
+```
+
+```{r}
+spot_matrix[3,1]=yieldlst[3,1]
+for (i in c(2:10)){
+  for (j in c(1:i-1)){
+      for (k in c(1:i-1)){
+  db=(100+100*bond$coupon[i]*0.5)/exp(daytomature[i]/365*yieldlst[3,i])
+  db=db+100*bond$coupon[i]*0.5/exp(daytomature[j]/365*yieldlst[3,i])
+  db=db-0.5*100*bond$coupon[i]/exp(daytomature[k]/365*spot_matrix[3,i-1])
+      }
+  }
+spot_matrix[3,i]=log((100+100*bond$coupon[i]*0.5)/db)/(daytomature[i]/365)
+}
+spot_matrix[3,]
+```
+
+```{r}
+spot_matrix[4,1]=yieldlst[4,1]
+for (i in c(2:10)){
+  for (j in c(1:i-1)){
+      for (k in c(1:i-1)){
+  db=(100+100*bond$coupon[i]*0.5)/exp(daytomature[i]/365*yieldlst[4,i])
+  db=db+100*bond$coupon[i]*0.5/exp(daytomature[j]/365*yieldlst[4,i])
+  }
+    db=db-0.5*100*bond$coupon[i]/exp(daytomature[k]/365*spot_matrix[4,i-1])
+    }
+spot_matrix[4,i]=log((100+100*bond$coupon[i]*0.5)/db)/(daytomature[i]/365)
+}
+```
+
+```{r}
+spot_matrix[5,1]=yieldlst[5,1]
+for (i in c(2:10)){
+  for (j in c(1:i-1)){
+      for (k in c(1:i-1)){
+  db=(100+100*bond$coupon[i]*0.5)/exp(daytomature[i]/365*yieldlst[5,i])
+  db=db+100*bond$coupon[i]*0.5/exp(daytomature[j]/365*yieldlst[5,i])
+  }
+    db=db-0.5*100*bond$coupon[i]/exp(daytomature[k]/365*spot_matrix[5,i-1])
+    }
+spot_matrix[5,i]=log((100+100*bond$coupon[i]*0.5)/db)/(daytomature[i]/365)
+}
+```
+
+```{r}
+spot_matrix[6,1]=yieldlst[6,1]
+for (i in c(2:10)){
+  for (j in c(1:i-1)){
+      for (k in c(1:i-1)){
+  db=(100+100*bond$coupon[i]*0.5)/exp(daytomature[i]/365*yieldlst[6,i])
+  db=db+100*bond$coupon[i]*0.5/exp(daytomature[j]/365*yieldlst[6,i])
+  }
+    db=db-0.5*100*bond$coupon[i]/exp(daytomature[k]/365*spot_matrix[6,i-1])
+    }
+spot_matrix[6,i]=log((100+100*bond$coupon[i]*0.5)/db)/(daytomature[i]/365)
+}
+```
+
+```{r}
+spot_matrix[7,1]=yieldlst[7,1]
+for (i in c(2:10)){
+  for (j in c(1:i-1)){
+      for (k in c(1:i-1)){
+  db=(100+100*bond$coupon[i]*0.5)/exp(daytomature[i]/365*yieldlst[7,i])
+  db=db+100*bond$coupon[i]*0.5/exp(daytomature[j]/365*yieldlst[7,i])
+  }
+    db=db-0.5*100*bond$coupon[i]/exp(daytomature[k]/365*spot_matrix[7,i-1])
+    }
+spot_matrix[7,i]=log((100+100*bond$coupon[i]*0.5)/db)/(daytomature[i]/365)
+}
+```
+
+```{r}
+spot_matrix[8,1]=yieldlst[8,1]
+for (i in c(2:10)){
+  for (j in c(1:i-1)){
+      for (k in c(1:i-1)){
+  db=(100+100*bond$coupon[i]*0.5)/exp(daytomature[i]/365*yieldlst[8,i])
+  db=db+100*bond$coupon[i]*0.5/exp(daytomature[j]/365*yieldlst[8,i])
+  }
+    db=db-0.5*100*bond$coupon[i]/exp(daytomature[k]/365*spot_matrix[8,i-1])
+    }
+spot_matrix[8,i]=log((100+100*bond$coupon[i]*0.5)/db)/(daytomature[i]/365)
+}
+```
+
+```{r}
+spot_matrix[9,1]=yieldlst[9,1]
+for (i in c(2:10)){
+  for (j in c(1:i-1)){
+      for (k in c(1:i-1)){
+  db=(100+100*bond$coupon[i]*0.5)/exp(daytomature[i]/365*yieldlst[9,i])
+  db=db+100*bond$coupon[i]*0.5/exp(daytomature[j]/365*yieldlst[9,i])
+  }
+    db=db-0.5*100*bond$coupon[i]/exp(daytomature[k]/365*spot_matrix[9,i-1])
+    }
+spot_matrix[9,i]=log((100+100*bond$coupon[i]*0.5)/db)/(daytomature[i]/365)
+}
+```
+
+```{r}
+spot_matrix[10,1]=yieldlst[10,1]
+for (i in c(2:10)){
+  for (j in c(1:i-1)){
+      for (k in c(1:i-1)){
+  db=(100+100*bond$coupon[i]*0.5)/exp(daytomature[i]/365*yieldlst[10,i])
+  db=db+100*bond$coupon[i]*0.5/exp(daytomature[j]/365*yieldlst[10,i])
+  }
+    db=db-0.5*100*bond$coupon[i]/exp(daytomature[k]/365*spot_matrix[10,i-1])
+    }
+spot_matrix[10,i]=log((100+100*bond$coupon[i]*0.5)/db)/(daytomature[i]/365)
+}
+spot_matrix
+```
+
+
+```{r}
+plot(type = "l", yeartomature, c(spot_matrix[1,]), ylab = "spot rate", xlab = "time/year",main = "spot curve",col=1,xaxt='n')
+lines(yeartomature,c(spot_matrix[2,]), type = "l", col=2,lwd=1.0)
+lines(yeartomature,c(spot_matrix[3,]), type = "l", col=3,lwd=1.0)
+lines(yeartomature,c(spot_matrix[4,]), type = "l", col=4,lwd=1.0)
+lines(yeartomature,c(spot_matrix[5,]), type = "l", col=5,lwd=1.0)
+lines(yeartomature,c(spot_matrix[6,]), type = "l", col=6,lwd=1.0)
+lines(yeartomature,c(spot_matrix[7,]), type = "l", col=7,lwd=1.0)
+lines(yeartomature,c(spot_matrix[8,]), type = "l", col=8,lwd=1.0)
+lines(yeartomature,c(spot_matrix[9,]), type = "l", col=9,lwd=1.0)
+lines(yeartomature,c(spot_matrix[10,]), type = "l", col=10,lwd=1.0)
+legend(x='bottomright',legend=c(pdate),col=c(1,2,3,4,5,6,7,8,9,10),lty=c(1,2,3,4,5,6,7,8,9,10))
+axis(side=1,at=c(0.5,1,1.5,2,2.5,3,3.5,4,4.5,5),labels=c(plotdate),tick=F)
+```
+
+Q4c
+
+```{r}
+fwd_matrix=matrix(0,nrow=10,ncol=4)
+for (j in c(1:4)){
+  for (i in c(1:10)){
+  fwd_matrix[i,j]=(spot_matrix[i,2*j+1]*(yeartomature[2*j+1])-spot_matrix[i,1]*yeartomature[1])/(yeartomature[2*j+1]-yeartomature[1])
+  }
+}
+fwd_matrix
+```
+
+```{r}
+plot(type='l',c(1:4),c(fwd_matrix[1,]),col=1,xlab="time/year",ylab="foreward rate",ylim=c(0.005,0.022),main="Forward Rate",xaxt="n")
+lines(type='l',c(1:4),c(fwd_matrix[2,]),col=2)
+lines(type='l',c(1:4),c(fwd_matrix[3,]),col=3)
+lines(type='l',c(1:4),c(fwd_matrix[4,]),col=4)
+lines(type='l',c(1:4),c(fwd_matrix[5,]),col=5)
+lines(type='l',c(1:4),c(fwd_matrix[6,]),col=6)
+lines(type='l',c(1:4),c(fwd_matrix[7,]),col=7)
+lines(type='l',c(1:4),c(fwd_matrix[8,]),col=8)
+lines(type='l',c(1:4),c(fwd_matrix[9,]),col=9)
+lines(type='l',c(1:4),c(fwd_matrix[10,]),col=10)
+legend(x='bottomright',legend=c(pdate),col=c(1,2,3,4,5,6,7,8,9,10),lty=c(1,2,3,4,5,6,7,8,9,10))
+axis(side=1,at=c(1,1.5,2,2.5,3,3.5,4),labels=c('1yr-1yr','','1yr-2yr','','1yr-3yr','','1yr-4yr'),tick=F)
+```
+
+
+Q5
+
+```{r}
+ytm_matrix = matrix(0,nrow=9,ncol=5)
+for (i in c(1:5)){
+  for (j in c(1:9)){
+    ytm_matrix[j,i]=log((yieldlst[2*i,j+1])/(yieldlst[2*i,j]))
+  }
+}
+```
+
+```{r}
+covytm=cov(ytm_matrix,ytm_matrix)
+covytm
+```
+
+```{r}
+annual_fwd= matrix(0,nrow=9,ncol=4)
+for (i in c(1:4)){
+for (k in c(1:9)){
+   annual_fwd[k,i]=log(fwd_matrix[k+1,i]/fwd_matrix[k,i])
+  }
+}
+annual_fwd
+```
+
+
+```{r}
+cov_fwd=cov(annual_fwd)
+cov_fwd
+```
+
+Q6
+```{r}
+eigen(cov_fwd)$vectors[,4]
+```
+
+
+```{r}
+eigen(covytm)
+```
+
+
